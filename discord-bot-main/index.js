@@ -1,4 +1,9 @@
 require('dotenv').config();
+// Some hosts only allow dashes in variable names: treat DISCORD-TOKEN the same as DISCORD_TOKEN
+for (const [key, value] of Object.entries(process.env)) {
+  const fixed = key.replace(/-/g, '_').toUpperCase();
+  if (fixed !== key && process.env[fixed] === undefined) process.env[fixed] = value;
+}
 const fs = require('fs');
 const path = require('path');
 const { Client, GatewayIntentBits, Partials, Events, ActivityType } = require('discord.js');
